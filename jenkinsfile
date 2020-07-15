@@ -1,1 +1,44 @@
-Hello
+pipeline {
+   agent any
+
+   stages {
+      stage('checkout scm') {
+         steps {
+            git 'https://github.com/praveenkumar1290/stepperform.git'
+         }
+      }
+     /* stage('install npm') {
+         steps {
+               
+          bat 'echo The current directory is %CD%'
+          bat 'npm install'
+         }
+      } */
+      stage('install angular-cli') {
+         steps {
+          bat 'npm install -g @angular/cli'
+         }
+      } 
+      
+     /* stage('SonarQube analysis') {
+      steps {
+        script {
+         scannerHome = tool 'sonar_scanner'
+        }
+        withSonarQubeEnv('sonarqube') {
+          bat "${scannerHome}/bin/sonar-scanner"
+        }
+      }
+    }*/
+      stage('deploy ng serve') {
+          options {
+      timeout(time: 4, unit: 'MINUTES') 
+        }
+         steps {
+          bat 'npm start'
+          
+          }
+      } 
+   }
+   
+}
